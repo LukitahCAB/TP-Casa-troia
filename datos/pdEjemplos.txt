@@ -1,0 +1,45 @@
+{
+    "rubros": [
+        {
+            "id": 1,
+            "nombre": "Electrónica",
+            "orden": 1
+        },
+        {
+            "id": 2,
+            "nombre": "Ropa",
+            "orden": 2
+        },
+        {
+            "id": 3,
+            "nombre": "Hogar",
+            "orden": 3
+        }
+    ],
+    "productos": [
+        {
+            "id": 1,
+            "nombre": "Smartphone",
+            "rubro": "Electrónica",
+            "precio": 299.99,
+            "controlaStock": true,
+            "stock": 50
+        },
+        {
+            "id": 2,
+            "nombre": "Camiseta",
+            "rubro": "Ropa",
+            "precio": 19.99,
+            "controlaStock": false,
+            "stock": 0
+        },
+        {
+            "id": 3,
+            "nombre": "Lámpara",
+            "rubro": "Hogar",
+            "precio": 49.99,
+            "controlaStock": true,
+            "stock": 100
+        }
+    ]
+}
