@@ -104,7 +104,9 @@ function actualizarTablaCajas() {
         cajasTableBody.innerHTML = cajas.map(caja => `
             <tr>
                 <td>${caja.fecha}</td>
-                <td>${caja.totalVendido}</td>
+                <td>${caja.ventas.length}</td>
+                <td>${caja.productosVendidos}</td>
+                <td>${caja.total}</td>
             </tr>
         `).join('');
     }
@@ -436,6 +438,26 @@ function guardarPresupuesto() {
     crearPresupuestoModal.hide();
 }
 
+// Función para crear una caja diaria
+function crearCajaDiaria() {
+    const fecha = new Date().toLocaleDateString();
+    const ventasDelDia = ventas.filter(venta => new Date(venta.fecha).toLocaleDateString() === fecha);
+    const productosVendidos = ventasDelDia.reduce((total, venta) => total + venta.productos.reduce((subtotal, p) => subtotal + p.cantidad, 0), 0);
+    const totalVentas = ventasDelDia.reduce((total, venta) => total + venta.total, 0);
+    const formasPago = [...new Set(ventasDelDia.map(venta => venta.formaPago))].join(', ');
+
+    const nuevaCaja = {
+        fecha: fecha,
+        ventas: ventasDelDia,
+        productosVendidos: productosVendidos,
+        total: totalVentas,
+        formasPago: formasPago
+    };
+
+    cajas.push(nuevaCaja);
+    actualizarTablaCajas();
+}
+
 // Asegurarse de que las funciones estén en el ámbito global
 window.mostrarCrearProductoModal = mostrarCrearProductoModal;
 window.mostrarModificarStockModal = mostrarModificarStockModal;
@@ -451,6 +473,7 @@ window.guardarVenta = guardarVenta;
 window.mostrarCrearPresupuestoModal = mostrarCrearPresupuestoModal;
 window.agregarProductoPresupuesto = agregarProductoPresupuesto;
 window.guardarPresupuesto = guardarPresupuesto;
+window.crearCajaDiaria = crearCajaDiaria;
 
 document.addEventListener("DOMContentLoaded", async () => {
     // Definir las funciones actualizarRubros y actualizarProductos
@@ -544,7 +567,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             cajasTableBody.innerHTML = cajas.map(caja => `
                 <tr>
                     <td>${caja.fecha}</td>
-                    <td>${caja.totalVendido}</td>
+                    <td>${caja.ventas.length}</td>
+                    <td>${caja.productosVendidos}</td>
+                    <td>${caja.total}</td>
                 </tr>
             `).join('');
         }
@@ -563,6 +588,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         actualizarTablaPrecios();
         actualizarTablaVentas();
         actualizarTablaPresupuestos();
+        actualizarTablaCajas();
     } catch (error) {
         console.error('Error cargando el archivo JSON:', error);
     }
@@ -646,4 +672,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.eliminarProducto = eliminarProducto;
     window.mostrarModificarPreciosModal = mostrarModificarPreciosModal;
     window.guardarCambiosPrecios = guardarCambiosPrecios;
+    window.mostrarCrearVentaModal = mostrarCrearVentaModal;
+    window.agregarProductoVenta = agregarProductoVenta;
+    window.guardarVenta = guardarVenta;
+    window.mostrarCrearPresupuestoModal = mostrarCrearPresupuestoModal;
+    window.agregarProductoPresupuesto = agregarProductoPresupuesto;
+    window.guardarPresupuesto = guardarPresupuesto;
+    window.crearCajaDiaria = crearCajaDiaria;
 });
